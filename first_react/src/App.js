@@ -1,38 +1,47 @@
-import ContactCard from "./ContactCard"
+import React, { Component } from "react"
+import ReactDOM from "react-dom"
 
-function App() {
-    return (
-        <div className="contacts">
-            <ContactCard 
-                name="Mr. Whiskerson" 
-                imgUrl="http://placekitten.com/300/200" 
-                phone="(212) 555-1234" 
-                email="mr.whiskaz@catnap.meow"
-            />
-            
-            <ContactCard 
-                name="Fluffykins" 
-                imgUrl="http://placekitten.com/400/200" 
-                phone="(212) 555-2345" 
-                email="fluff@me.com"
-            />
-            
-            <ContactCard 
-                name="Destroyer" 
-                imgUrl="http://placekitten.com/400/300" 
-                phone="(212) 555-3456" 
-                email="ofworlds@yahoo.com"
-            />
-            
-            <ContactCard 
-                name="Felix" 
-                imgUrl="http://placekitten.com/200/100" 
-                phone="(212) 555-4567" 
-                email="thecat@hotmail.com"
-            />
-            
-        </div>
-    )
+import ContactCard from "./ContactCard"
+import ContactCardsList from "./ContactCardsList"
+
+class App extends React.Component{
+    constructor(){
+        super()
+        this.state={
+            isLoggedIn : false,
+            isLoggedColor : "red"
+        }
+		this.loginApp = this.loginApp.bind(this)
+    }
+
+    loginApp(){
+        this.setState(prevState =>{
+            return {
+                isLoggedIn: !prevState.isLoggedIn,
+                isLoggedColor : prevState.isLoggedColor="red" ? "green" : "red"
+            }
+        })
+    }
+
+    render(){
+        const contactsList = ContactCardsList.map(obj => <ContactCard 
+                                                            key={obj.id}
+                                                            name={obj.name}
+                                                            imgUrl={obj.imgUrl}
+                                                            phone={obj.phone}
+                                                            email={obj.email}
+                                                            />)
+
+        const logged = this.state.isLoggedIn ? "Logged" : "Not Logged"
+
+        return (
+            <div className="contacts">
+				<h1 style={{color:this.state.isLoggedColor}}>{logged}</h1>
+                <button onClick={this.loginApp}>Login</button>
+                {contactsList}
+            </div>
+        )
+    }
 }
 
 export default App
